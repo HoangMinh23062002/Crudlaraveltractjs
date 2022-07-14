@@ -14,72 +14,72 @@ class APIController extends Controller
         $products = Product::all();
         return response()->json($products);
     }
-    public function getOneProduct($id)
-    {
-        $product = Product::find($id);
-        return response()->json($product);
-    }
-    public function addProduct(Request $request)
-    {
-        $product = new Product();
-        $product->name = $request->input('name');
-        $product->image = $request->input('image');
-        $product->description = $request->input('description');
-        $product->unit_price = intval($request->input('unit_price'));
-        $product->promotion_price = intval($request->input('promotion_price'));
-        $product->unit = $request->input('unit');
-        $product->new = intval($request->input('new'));
-        $product->id_type = intval($request->input('id_type'));
-        $product->save();
-        return $product;
-    }
-    public function deleteProduct($id)
-    {
-        $product = Product::find($id);
-        $fileName = 'sources/image/product/' . $product->image;
-        if (File::exists($fileName)) {
-            File::delete($fileName);
-        }
-        $product->delete();
-        return ['status' => 'ok', 'msg' => 'Delete successed'];
-    }
-    public function editProduct(Request $request, $id)
-    {
-        $product = Product::find($id);
+    // public function getOneProduct($id)
+    // {
+    //     $product = Product::find($id);
+    //     return response()->json($product);
+    // }
+    // public function addProduct(Request $request)
+    // {
+    //     $product = new Product();
+    //     $product->name = $request->input('name');
+    //     $product->image = $request->input('image');
+    //     $product->description = $request->input('description');
+    //     $product->unit_price = intval($request->input('unit_price'));
+    //     $product->promotion_price = intval($request->input('promotion_price'));
+    //     $product->unit = $request->input('unit');
+    //     $product->new = intval($request->input('new'));
+    //     $product->id_type = intval($request->input('id_type'));
+    //     $product->save();
+    //     return $product;
+    // }
+    // public function deleteProduct($id)
+    // {
+    //     $product = Product::find($id);
+    //     $fileName = 'sources/image/product/' . $product->image;
+    //     if (File::exists($fileName)) {
+    //         File::delete($fileName);
+    //     }
+    //     $product->delete();
+    //     return ['status' => 'ok', 'msg' => 'Delete successed'];
+    // }
+    // public function editProduct(Request $request, $id)
+    // {
+    //     $product = Product::find($id);
 
-        $product->name = $request->input('name');
-        $product->image = $request->input('image');
-        $product->description = $request->input('description');
-        $product->unit_price = intval($request->input('unit_price'));
-        $product->promotion_price = intval($request->input('promotion_price'));
-        $product->unit = $request->input('unit');
-        $product->new = intval($request->input('new'));
-        $product->id_type = intval($request->input('id_type'));
+    //     $product->name = $request->input('name');
+    //     $product->image = $request->input('image');
+    //     $product->description = $request->input('description');
+    //     $product->unit_price = intval($request->input('unit_price'));
+    //     $product->promotion_price = intval($request->input('promotion_price'));
+    //     $product->unit = $request->input('unit');
+    //     $product->new = intval($request->input('new'));
+    //     $product->id_type = intval($request->input('id_type'));
 
-        $product->save();
-        return response()->json(['status' => 'ok', 'msg' => 'Edit successed']);
-    }
+    //     $product->save();
+    //     return response()->json(['status' => 'ok', 'msg' => 'Edit successed']);
+    // }
 
-    public function uploadImage(Request $request)
-    {
-        // process image
-        if ($request->hasFile('uploadImage')) {
-            $file = $request->file('uploadImage');
-            $fileName = $file->getClientOriginalName();
+    // public function uploadImage(Request $request)
+    // {
+    //     // process image
+    //     if ($request->hasFile('uploadImage')) {
+    //         $file = $request->file('uploadImage');
+    //         $fileName = $file->getClientOriginalName();
 
-            $file->move('sources/image/product', $fileName);
+    //         $file->move('sources/image/product', $fileName);
 
-            return response()->json(["message" => "ok"]);
-        } else return response()->json(["message" => "false"]);
-    }
+    //         return response()->json(["message" => "ok"]);
+    //     } else return response()->json(["message" => "false"]);
+    // }
     public function searchByName(Request $request)
     {
-        if($request->keyword == null)
+        if($request->keyword == null or $request->keyword == "")
         {
-            return DB::all();
+            return DB::table('products')->get();
         }
         $result = DB::table('products')
-                ->where('name', 'like', "% $request->keyword %")
+                ->where('name', 'like', "%$request->keyword%")
                 ->get();
         return $result;
     }

@@ -19,9 +19,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 Route::get('/get-product',[APIController::class,'getproducts']);
-Route::get('/get-product/{id}',[APIController::class,'getOneProduct']);
-Route::post('/add-product',[APIController::class,'addProduct']);
-Route::delete('/delete-product/{id}',[APIController::class,'deleteProduct']);
-Route::put('/edit-product/{id}',[APIController::class,'editProduct']);
-Route::post('/upload-image',[APIController::class,'uploadImage']);
+// Route::get('/get-product/{id}',[APIController::class,'getOneProduct']);
+// Route::post('/add-product',[APIController::class,'addProduct']);
+// Route::delete('/delete-product/{id}',[APIController::class,'deleteProduct']);
+// Route::put('/edit-product/{id}',[APIController::class,'editProduct']);
+// Route::post('/upload-image',[APIController::class,'uploadImage']);
 Route::get('/get-product-by-keyword',[APIController::class,'searchByName']);
